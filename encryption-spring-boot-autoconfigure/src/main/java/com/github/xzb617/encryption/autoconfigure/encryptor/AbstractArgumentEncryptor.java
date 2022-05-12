@@ -16,6 +16,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.Charset;
 
 /**
  * 抽象的加密器
@@ -29,6 +30,11 @@ public abstract class AbstractArgumentEncryptor implements ArgumentEncryptor {
      * 日志
      */
     private final static Logger LOGGER = LoggerFactory.getLogger(AbstractArgumentEncryptor.class);
+
+    /**
+     * 字符集
+     */
+    protected Charset charset;
 
     /**
      * 各个算法内部配置初始化
@@ -56,6 +62,7 @@ public abstract class AbstractArgumentEncryptor implements ArgumentEncryptor {
     @Override
     public void initConfig(AlgorithmEnvironments environments) {
         try {
+            this.charset = Charset.forName(environments.getCharset());
             this.initConfigRespective(environments);
         } catch (MissingAlgorithmConfigException var1) {
             throw var1;

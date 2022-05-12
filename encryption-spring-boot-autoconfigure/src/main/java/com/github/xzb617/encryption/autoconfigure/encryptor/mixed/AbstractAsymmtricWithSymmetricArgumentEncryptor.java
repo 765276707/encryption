@@ -62,12 +62,12 @@ public abstract class AbstractAsymmtricWithSymmetricArgumentEncryptor extends Ab
             secret = SecretFactory.generateRandomUUIDSecret(16);
         }
         // RSA加密密钥(客户端给的公钥进行加密)，并添加到响应头
-        byte[] secretBytes = this.privateEncryptCipher.doFinal(secret.getBytes());
+        byte[] secretBytes = this.privateEncryptCipher.doFinal(secret.getBytes(charset));
         String encryptedSecret = Base64.encodeBase64String(secretBytes);
         this.setSecretIntoHeader(responseHeaders, encryptedSecret);
         // 获取 Cipher
         Cipher cipher = this.createEncryptCipher(secret);
-        byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
+        byte[] encryptedBytes = cipher.doFinal(plainText.getBytes(charset));
         // 对加密后数据进行 Base64 编码
         return Base64.encodeBase64URLSafeString(encryptedBytes);
     }

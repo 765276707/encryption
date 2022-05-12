@@ -63,7 +63,7 @@ public abstract class AbstractSymmetricArgumentEncryptor extends AbstractArgumen
 
     @Override
     protected String encryptInternal(String plainText, ResponseHeaders responseHeaders) throws Exception {
-        byte[] encryptedBytes = this.encryptCipher.doFinal(plainText.getBytes());
+        byte[] encryptedBytes = this.encryptCipher.doFinal(plainText.getBytes(charset));
         return Base64.encodeBase64URLSafeString(encryptedBytes);
     }
 

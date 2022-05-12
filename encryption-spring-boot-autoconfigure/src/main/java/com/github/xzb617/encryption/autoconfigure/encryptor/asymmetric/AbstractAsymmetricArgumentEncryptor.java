@@ -47,7 +47,7 @@ public abstract class AbstractAsymmetricArgumentEncryptor extends AbstractArgume
 
     @Override
     protected String encryptInternal(String plainText, ResponseHeaders responseHeaders) throws Exception {
-        byte[] var1 = plainText.getBytes();
+        byte[] var1 = plainText.getBytes(charset);
         byte[] var2 = this.privateEncryptCipher.doFinal(var1);
         return Base64.encodeBase64String(var2);
     }
