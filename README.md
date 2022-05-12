@@ -16,7 +16,7 @@
 
 
 #### 使用手册
-详见本项目下的Wiki文档
+[使用手册](https://gitee.com/xu_zhibin/encryption/wikis/%E7%94%A8%E5%89%8D%E5%BF%85%E8%AF%BB)
 
 
 #### Maven坐标
