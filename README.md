@@ -8,7 +8,7 @@
 #### 特性
 - 内置超过8种常用的算法或模式（对称、非对称、混合模式），基本上可以覆盖大部分项目的加密需求
 - 支持如@DecryptParam、@DecryptBody等在内的丰富的注解
-- 兼容Spring的Validation校验体系，可以无缝使用了其进行参数校验
+- 兼容SpringMVC的Validation校验体系，可以无缝使用了其进行参数校验
 - 兼容SpringBoot2.x的JSON框架体系，默认集成了Jackson、Gson、Fastjson，也可拓展其他Json框架的集成
 - 内置调试模式，可方便查看和调试加解密时的数据，可配置详细输出类目
 - 支持自定义参数加密器
