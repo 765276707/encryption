@@ -1,16 +1,15 @@
-package com.github.xzb617.encyrption.sample.aes_or_rsa;
+package com.github.xzb617.encyrption.sample.aes;
 
 import com.github.xzb617.encryption.autoconfigure.constant.Algorithm;
-import com.github.xzb617.encryption.autoconfigure.encryptor.ArgumentEncryptor;
-import com.github.xzb617.encryption.autoconfigure.envirs.ResponseHeaders;
-import com.github.xzb617.encryption.autoconfigure.properties.EncryptionProperties;
+import com.github.xzb617.encryption.autoconfigure.encryptor.symmetric.AesArgumentEncryptor;
+import com.github.xzb617.encryption.autoconfigure.mock.MockEncryption;
 import com.github.xzb617.encryption.autoconfigure.serializer.EncryptionJsonSerializer;
 import com.github.xzb617.encyrption.sample.dto.ModelEntity;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -37,38 +36,29 @@ import java.util.Date;
 public class BodyControllerTests {
 
     private MockMvc mockMvc;
+    private MockEncryption mockEncryption;
 
     @Resource
     private WebApplicationContext webApplicationContext;
     @Resource
     private EncryptionJsonSerializer jsonSerializer;
-    @Resource
-    private ArgumentEncryptor argumentEncryptor;
-    @Resource
-    private EncryptionProperties encryptionProperties;
 
     @Before
     public void init() {
         // 实例化
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        // 判断是否为 Aes 算法
-        Algorithm algorithm = encryptionProperties.getAlgorithm();
-        if (!Algorithm.AES.equals(algorithm)) {
-            throw new IllegalArgumentException("当前的算法不是本测试用力指定的算法：Aes");
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        this.mockEncryption = MockEncryption.configurableEnvironmentContextSetup(new AesArgumentEncryptor(), (ConfigurableEnvironment) webApplicationContext.getEnvironment());
+        // 判断是否为用例要求的算法
+        if (!Algorithm.AES.equals(this.mockEncryption.getAlgorithm())) {
+            throw new IllegalArgumentException("本测试用例要求采用算法模式为 AES，您尚未配置该算法");
         }
     }
 
     @Test
     public void mock() throws Exception {
-        // 构造请求参数，序列化后加密
-        ModelEntity entity = new ModelEntity();
-        entity.setIntKey(1);
-        entity.setLongKey(1658613L);
-        entity.setStrKey("这是字符串参数");
-        entity.setDateKey(new Date());
-        String strJson = jsonSerializer.serialize(entity);
-        ResponseHeaders responseHeaders = new ResponseHeaders(new HttpHeaders());
-        String content = argumentEncryptor.encrypt(strJson, responseHeaders);
+        // 生成加密后的值
+        String jsonData = serializeModelEntity();
+        String content  = mockEncryption.encryptValue(jsonData);
 
         // 模拟请求
         ResultActions actions = mockMvc.perform(MockMvcRequestBuilders
@@ -87,4 +77,16 @@ public class BodyControllerTests {
     }
 
 
+    /**
+     * 模拟一个请求实体的序列化字符串
+     * @return
+     */
+    private String serializeModelEntity() {
+        ModelEntity entity = new ModelEntity();
+        entity.setIntKey(1);
+        entity.setLongKey(1658613L);
+        entity.setStrKey("这是字符串参数");
+        entity.setDateKey(new Date());
+        return jsonSerializer.serialize(entity);
+    }
 }

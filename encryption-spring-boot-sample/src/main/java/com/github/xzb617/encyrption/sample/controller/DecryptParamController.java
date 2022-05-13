@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -30,13 +31,13 @@ public class DecryptParamController {
      * @return
      */
     @GetMapping("/index")
-    public Result index( @DecryptParam(required = true, message = "intKey不能为空") Integer intKey,
-                                    @DecryptParam(required = true, message = "longKey不能为空") Long longKey,
-                                    @DecryptParam(required = true, message = "doubleKey不能为空") Double doubleKey,
-                                    @DecryptParam(required = true, message = "strKey不能为空") String strKey,
-                                    @DecryptParam(required = true, message = "boolKey不能为空") Boolean boolKey,
-                                    @DecryptParam(required = true, message = "dateKey不能为空") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date dateKey
-                           ) {
+    public Result index(@DecryptParam(required = true, message = "intKey不能为空", defaultValue = "1") Integer intKey,
+                        @DecryptParam(required = true, message = "longKey不能为空") Long longKey,
+                        @DecryptParam(required = true, message = "doubleKey不能为空") Double doubleKey,
+                        @DecryptParam(required = true, message = "strKey不能为空") String strKey,
+                        @DecryptParam(required = true, message = "boolKey不能为空") Boolean boolKey,
+                        @DecryptParam(required = true, message = "dateKey不能为空") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date dateKey
+                       ) {
         return Result.success("解密参数成功",
                 String.format(
                     "intKey: %d, longKey: %d, doubleKey: %f, strKey: %s, boolKey: %s, dateKey: %s",

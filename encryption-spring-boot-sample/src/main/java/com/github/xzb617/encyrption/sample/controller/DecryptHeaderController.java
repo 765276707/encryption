@@ -22,7 +22,7 @@ public class DecryptHeaderController {
      * @return
      */
     @GetMapping("/index")
-    public Result index(@DecryptHeader String headerKey) {
+    public Result index(@DecryptHeader(required = true, message = "headerKey不能为空", defaultValue = "defaultValue") String headerKey) {
         return Result.success("解密成功", String.format("headerKey: %s", headerKey));
     }
 

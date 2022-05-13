@@ -1,14 +1,13 @@
-package com.github.xzb617.encyrption.sample.aes_or_rsa;
+package com.github.xzb617.encyrption.sample.aes;
 
 import com.github.xzb617.encryption.autoconfigure.constant.Algorithm;
-import com.github.xzb617.encryption.autoconfigure.encryptor.ArgumentEncryptor;
-import com.github.xzb617.encryption.autoconfigure.envirs.ResponseHeaders;
-import com.github.xzb617.encryption.autoconfigure.properties.EncryptionProperties;
+import com.github.xzb617.encryption.autoconfigure.encryptor.symmetric.AesArgumentEncryptor;
+import com.github.xzb617.encryption.autoconfigure.mock.MockEncryption;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -23,7 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.annotation.Resource;
 
 /**
- * DecryptModel 测试
+ * DecryptHeader测试
  * @author xzb617
  * @date 2022/5/11 12:26
  * @description:
@@ -31,48 +30,37 @@ import javax.annotation.Resource;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @WebAppConfiguration
-public class DecryptModelControllerTests {
+public class DecryptHeaderControllerTests {
 
     private MockMvc mockMvc;
+    private MockEncryption mockEncryption;
 
     @Resource
     private WebApplicationContext webApplicationContext;
-    @Resource
-    private ArgumentEncryptor argumentEncryptor;
-    @Resource
-    private EncryptionProperties encryptionProperties;
 
     @Before
     public void init() {
         // 实例化
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        // 判断是否为 Aes 算法
-        Algorithm algorithm = encryptionProperties.getAlgorithm();
-        if (!Algorithm.AES.equals(algorithm)) {
-            throw new IllegalArgumentException("当前的算法不是本测试用力指定的算法：Aes");
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        this.mockEncryption = MockEncryption.configurableEnvironmentContextSetup(new AesArgumentEncryptor(), (ConfigurableEnvironment) webApplicationContext.getEnvironment());
+        // 判断是否为用例要求的算法
+        if (!Algorithm.AES.equals(this.mockEncryption.getAlgorithm())) {
+            throw new IllegalArgumentException("本测试用例要求采用算法模式为 AES，您尚未配置该算法");
         }
     }
 
-
     @Test
     public void mock() throws Exception {
-        // 获取加密的请求参数
-        ResponseHeaders responseHeaders = new ResponseHeaders(new HttpHeaders());
-        String intKeyValue = argumentEncryptor.encrypt("1", responseHeaders);
-        String longKeyValue = argumentEncryptor.encrypt("15230", responseHeaders);
-        String strKeyValue = argumentEncryptor.encrypt("strKeyValue", responseHeaders);
-        String dateKeyValue = argumentEncryptor.encrypt("2020-12-10 10:10:15", responseHeaders);
+        // 加密的请求头参数
+        String headValue = mockEncryption.encryptValue("这是请求头");
 
         // 模拟请求
         ResultActions actions = mockMvc.perform(MockMvcRequestBuilders
-                .post("/decryptModel/index")
+                .get("/decryptHeader/index")
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .characterEncoding("UTF-8")
-                // 添加参数
-                .param("intKey", intKeyValue)
-                .param("longKey", longKeyValue)
-                .param("strKey", strKeyValue)
-                .param("dateKey", dateKeyValue)
+                // 添加请求头
+                .header("headerKey", headValue)
         );
 
         // 解决返回值中文乱码问题

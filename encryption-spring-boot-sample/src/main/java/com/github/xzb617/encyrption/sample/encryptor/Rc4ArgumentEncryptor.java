@@ -2,6 +2,7 @@ package com.github.xzb617.encyrption.sample.encryptor;
 
 import com.github.xzb617.encryption.autoconfigure.encryptor.ArgumentEncryptor;
 import com.github.xzb617.encryption.autoconfigure.envirs.AlgorithmEnvironments;
+import com.github.xzb617.encryption.autoconfigure.envirs.impl.ConfigurableAlgorithmEnvironments;
 import com.github.xzb617.encryption.autoconfigure.envirs.RequestHeaders;
 import com.github.xzb617.encryption.autoconfigure.envirs.ResponseHeaders;
 import com.github.xzb617.encyrption.sample.utils.Rc4Util;
