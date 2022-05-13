@@ -67,6 +67,14 @@ public class ResponseHeaders {
     }
 
     /**
+     * 移除
+     * @param key
+     */
+    public void removeHeader(String key) {
+        this.httpHeaders.remove(key);
+    }
+
+    /**
      * 添加请求头
      * @param key 键
      * @param value 值

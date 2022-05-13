@@ -1,6 +1,7 @@
 package com.github.xzb617.encryption.autoconfigure.encryptor.asymmetric;
 
 import com.github.xzb617.encryption.autoconfigure.envirs.AlgorithmEnvironments;
+import com.github.xzb617.encryption.autoconfigure.envirs.impl.ConfigurableAlgorithmEnvironments;
 import com.github.xzb617.encryption.autoconfigure.utils.RsaUtil;
 import javax.crypto.Cipher;
 import java.security.PrivateKey;

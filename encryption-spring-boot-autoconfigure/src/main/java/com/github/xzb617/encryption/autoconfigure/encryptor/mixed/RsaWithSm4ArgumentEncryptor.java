@@ -1,6 +1,7 @@
 package com.github.xzb617.encryption.autoconfigure.encryptor.mixed;
 
 import com.github.xzb617.encryption.autoconfigure.envirs.AlgorithmEnvironments;
+import com.github.xzb617.encryption.autoconfigure.envirs.impl.ConfigurableAlgorithmEnvironments;
 
 
 import javax.crypto.Cipher;

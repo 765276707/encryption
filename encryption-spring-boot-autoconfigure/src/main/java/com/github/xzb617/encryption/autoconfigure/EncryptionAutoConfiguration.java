@@ -4,7 +4,7 @@ import com.github.xzb617.encryption.autoconfigure.config.EncryptionArgumentResol
 import com.github.xzb617.encryption.autoconfigure.config.EncryptionConfigure;
 import com.github.xzb617.encryption.autoconfigure.constant.Orders;
 import com.github.xzb617.encryption.autoconfigure.encryptor.ArgumentEncryptor;
-import com.github.xzb617.encryption.autoconfigure.envirs.AlgorithmEnvironments;
+import com.github.xzb617.encryption.autoconfigure.envirs.impl.ConfigurableAlgorithmEnvironments;
 import com.github.xzb617.encryption.autoconfigure.envirs.Configurator;
 import com.github.xzb617.encryption.autoconfigure.envirs.Registry;
 import com.github.xzb617.encryption.autoconfigure.exceptions.framework.InstanceBeanException;
@@ -48,7 +48,7 @@ public class EncryptionAutoConfiguration implements BeanFactoryPostProcessor, En
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory factory) throws BeansException {
         // 自动化的配置
-        AlgorithmEnvironments environments = new AlgorithmEnvironments(configurableEnvironment);
+        ConfigurableAlgorithmEnvironments environments = new ConfigurableAlgorithmEnvironments(configurableEnvironment);
 
         // 自定义配置类
         ArgumentEncryptor argumentEncryptor = null;

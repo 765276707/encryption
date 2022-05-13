@@ -3,6 +3,7 @@ package com.github.xzb617.encryption.autoconfigure.encryptor.asymmetric;
 import com.github.xzb617.encryption.autoconfigure.constant.AsymmetricConfigKey;
 import com.github.xzb617.encryption.autoconfigure.encryptor.AbstractArgumentEncryptor;
 import com.github.xzb617.encryption.autoconfigure.envirs.AlgorithmEnvironments;
+import com.github.xzb617.encryption.autoconfigure.envirs.impl.ConfigurableAlgorithmEnvironments;
 import com.github.xzb617.encryption.autoconfigure.envirs.RequestHeaders;
 import com.github.xzb617.encryption.autoconfigure.envirs.ResponseHeaders;
 import org.apache.commons.codec.binary.Base64;

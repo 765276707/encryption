@@ -1,10 +1,10 @@
 package com.github.xzb617.encryption.autoconfigure.encryptor.mixed;
 
 import com.github.xzb617.encryption.autoconfigure.constant.AsymmetricConfigKey;
-import com.github.xzb617.encryption.autoconfigure.constant.SecretMocks;
+import com.github.xzb617.encryption.autoconfigure.envirs.AlgorithmEnvironments;
+import com.github.xzb617.encryption.autoconfigure.mock.MockConstant;
 import com.github.xzb617.encryption.autoconfigure.constant.SymmetricConfigKey;
 import com.github.xzb617.encryption.autoconfigure.encryptor.AbstractArgumentEncryptor;
-import com.github.xzb617.encryption.autoconfigure.envirs.AlgorithmEnvironments;
 import com.github.xzb617.encryption.autoconfigure.envirs.RequestHeaders;
 import com.github.xzb617.encryption.autoconfigure.envirs.ResponseHeaders;
 import com.github.xzb617.encryption.autoconfigure.exceptions.spring.HttpMessageDecryptException;
@@ -12,7 +12,6 @@ import com.github.xzb617.encryption.autoconfigure.factories.SecretFactory;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.Cipher;
-import java.util.Arrays;
 
 /**
  * 抽象的混合模式加密器
@@ -57,7 +56,7 @@ public abstract class AbstractAsymmtricWithSymmetricArgumentEncryptor extends Ab
 
     @Override
     protected String encryptInternal(String plainText, ResponseHeaders responseHeaders) throws Exception {
-        String secret = responseHeaders.getHeader(SecretMocks.MOCK_SECRET_KEY);
+        String secret = responseHeaders.getHeader(MockConstant.MOCK_SECRET_KEY);
         if (secret == null) {
             secret = SecretFactory.generateRandomUUIDSecret(16);
         }
@@ -65,6 +64,8 @@ public abstract class AbstractAsymmtricWithSymmetricArgumentEncryptor extends Ab
         byte[] secretBytes = this.privateEncryptCipher.doFinal(secret.getBytes(charset));
         String encryptedSecret = Base64.encodeBase64String(secretBytes);
         this.setSecretIntoHeader(responseHeaders, encryptedSecret);
+        // 移除Mock数据
+        responseHeaders.removeHeader(MockConstant.MOCK_SECRET_KEY);
         // 获取 Cipher
         Cipher cipher = this.createEncryptCipher(secret);
         byte[] encryptedBytes = cipher.doFinal(plainText.getBytes(charset));

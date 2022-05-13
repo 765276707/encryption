@@ -1,4 +1,4 @@
-package com.github.xzb617.encryption.autoconfigure.constant;
+package com.github.xzb617.encryption.autoconfigure.mock;
 
 /**
  * 密钥模拟常量
@@ -6,7 +6,7 @@ package com.github.xzb617.encryption.autoconfigure.constant;
  * @date 2022/5/11 15:20
  * @description:
  */
-public class SecretMocks {
+public class MockConstant {
 
     /**
      * 响应头中如果包含该值，则对称算法的secret则会确定为该key的值，而不会有Secret工厂去生成
