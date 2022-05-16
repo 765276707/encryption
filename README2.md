@@ -20,3 +20,18 @@
 
 预计优化：
 - 优化反射性能
+
+#### 使用手册
+[使用手册](https://gitee.com/xu_zhibin/encryption/wikis/%E7%94%A8%E5%89%8D%E5%BF%85%E8%AF%BB)
+
+
+#### Maven坐标
+支持Maven依赖安装，如果中央仓库（后续会上传）没有，则需要打包编译安装到本地仓库或私服（版本号为最新版本号）：
+~~~xml
+<!-- 导入 starter 包-->
+<dependency>
+    <groupId>com.github.xzb617</groupId>
+    <artifactId>encryption-spring-boot-starter</artifactId>
+    <version>1.0.1</version>
+</dependency>
+~~~
